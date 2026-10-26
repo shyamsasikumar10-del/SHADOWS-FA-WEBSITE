@@ -1,102 +1,277 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SHADOWS FA | Football Academy</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f4f5f7;
-      color: #172033;
-    }
-    header {
-      background: #102d58;
-      color: white;
-      padding: 24px 16px;
-      text-align: center;
-    }
-    header h1 { margin: 0; font-size: 30px; }
-    header p { margin-bottom: 0; }
-    nav {
-      background: #ffcf28;
-      padding: 13px;
-      text-align: center;
-    }
-    nav a {
-      color: #102d58;
-      text-decoration: none;
-      font-weight: bold;
-      margin: 0 10px;
-    }
-    main {
-      max-width: 850px;
-      margin: 25px auto;
-      padding: 0 15px;
-    }
-    section {
-      background: white;
-      margin-bottom: 20px;
-      padding: 22px;
-      border-radius: 10px;
-    }
-    h2 { color: #102d58; }
-    .welcome {
-      background: #102d58;
-      color: white;
-      text-align: center;
-      padding: 35px 20px;
-      border-radius: 10px;
-    }
-    .welcome h2 { color: #ffcf28; }
-    footer {
-      background: #102d58;
-      color: white;
-      text-align: center;
-      padding: 18px;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SHADOWS FA | Football Academy</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f3f5f8;color:#172033}
+header{background:#102d58;color:white;text-align:center;padding:25px 12px}
+header h1{margin:0;font-size:30px;letter-spacing:2px}
+header p{margin-bottom:0}
+nav{background:#ffcf28;padding:14px 5px;text-align:center}
+nav a{color:#102d58;text-decoration:none;font-weight:bold;margin:0 8px}
+main{max-width:900px;margin:22px auto;padding:0 12px}
+.hero{background:#102d58;color:white;text-align:center;padding:40px 15px;border-radius:12px}
+.hero h2{color:#ffcf28;font-size:26px}
+section{background:white;margin:18px 0;padding:20px;border-radius:10px}
+h2{color:#102d58}
+.card{border:1px solid #ddd;border-left:5px solid #ffcf28;padding:14px;margin:12px 0;border-radius:6px}
+input,select,button{width:100%;padding:12px;margin:7px 0;border:1px solid #ccc;border-radius:6px;font-size:15px}
+button{background:#102d58;color:white;font-weight:bold;cursor:pointer}
+button:hover{opacity:.9}
+.yellow{background:#ffcf28;color:#102d58}
+.hidden{display:none}
+.notice{padding:10px;background:#fff4c2;border-radius:6px}
+footer{background:#102d58;color:white;text-align:center;padding:18px;margin-top:25px}
+</style>
 </head>
+
 <body>
-  <header>
-    <h1>SHADOWS FA</h1>
-    <p>Football Academy | Mundur · Muttikulangara</p>
-  </header>
 
-  <nav>
-    <a href="#home">Home</a>
-    <a href="#matches">Matches</a>
-    <a href="#players">Players</a>
-    <a href="#contact">Contact</a>
-  </nav>
+<header>
+<h1>SHADOWS FA</h1>
+<p>Football Academy | Mundur · Muttikulangara</p>
+</header>
 
-  <main>
-    <div class="welcome" id="home">
-      <h2>WELCOME TO SHADOWS FA</h2>
-      <p>Developing talent. Building teamwork. Creating champions.</p>
-    </div>
+<nav>
+<a href="#home">Home</a>
+<a href="#matches">Matches</a>
+<a href="#results">Results</a>
+<a href="#players">Players</a>
+<a href="#admin">Admin</a>
+</nav>
 
-    <section id="matches">
-      <h2>⚽ Matches & Results</h2>
-      <p>Match schedules and results will be displayed here.</p>
-    </section>
+<main>
 
-    <section id="players">
-      <h2>🥅 Our Players</h2>
-      <p>Player profiles and top scorers will be displayed here.</p>
-    </section>
+<div class="hero" id="home">
+<h2>WELCOME TO SHADOWS FA</h2>
+<p>Developing Talent. Building Teamwork. Creating Champions.</p>
+<p>📍 Mundur | Muttikulangara, Palakkad</p>
+</div>
 
-    <section id="contact">
-      <h2>📍 Contact</h2>
-      <p>SHADOWS FA</p>
-      <p>Mundur | Muttikulangara, Palakkad</p>
-    </section>
-  </main>
+<section id="matches">
+<h2>⚽ Upcoming Matches</h2>
+<div id="upcoming"><p>Loading matches...</p></div>
+</section>
 
-  <footer>
-    <p>© SHADOWS FA Football Academy</p>
-  </footer>
+<section id="results">
+<h2>🏆 Match Results</h2>
+<div id="completed"><p>Loading results...</p></div>
+</section>
+
+<section id="players">
+<h2>🥅 Players & Top Scorers</h2>
+<p>Player profiles and top scorer information will be added here.</p>
+</section>
+
+<section id="admin">
+<h2>🔐 Admin Panel</h2>
+
+<div id="loginBox">
+<p>Admin login required to manage matches and results.</p>
+<form id="loginForm">
+<input type="email" id="email" placeholder="Admin Email" required>
+<input type="password" id="password" placeholder="Password" required>
+<button type="submit">Login</button>
+</form>
+</div>
+
+<div id="dashboard" class="hidden">
+<h3>Admin Dashboard</h3>
+<p id="adminMessage">You are logged in.</p>
+
+<form id="matchForm">
+<h3>Add Match / Result</h3>
+
+<input id="category" placeholder="Category (e.g. Under 17)" required>
+<input id="opponent" placeholder="Opponent Team" required>
+<input id="date" type="date">
+<input id="time" placeholder="Match Time (e.g. 3:00 PM)">
+<input id="venue" placeholder="Venue">
+
+<select id="status">
+<option value="upcoming">Upcoming Match</option>
+<option value="completed">Completed Match</option>
+</select>
+
+<input id="ourScore" type="number" min="0" placeholder="SHADOWS FA Score">
+<input id="theirScore" type="number" min="0" placeholder="Opponent Score">
+
+<button type="submit">Save Match</button>
+</form>
+
+<button id="logout" class="yellow">Logout</button>
+</div>
+
+<p id="message" aria-live="polite"></p>
+</section>
+
+</main>
+
+<footer>
+<p>© SHADOWS FA Football Academy</p>
+<p>Mundur | Muttikulangara | Palakkad</p>
+</footer>
+
+<script>
+const SUPABASE_URL = "https://pjuwyqyielozfznoptvo.supabase.co";
+const SUPABASE_KEY = "sb_publishable_hZ7_wwztld7Q0pE30x1wUQ_baKrSYKz";
+
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const message = document.getElementById("message");
+
+function showMessage(text) {
+  message.textContent = text;
+}
+
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",
+    '"':"&quot;","'":"&#39;"
+  })[char]);
+}
+
+async function loadMatches() {
+  const upcoming = document.getElementById("upcoming");
+  const completed = document.getElementById("completed");
+
+  const {data, error} = await db
+    .from("matches")
+    .select("*")
+    .order("match_date", {ascending:true});
+
+  if (error) {
+    upcoming.textContent = "Matches could not be loaded. Please check database settings.";
+    completed.textContent = "Results could not be loaded.";
+    console.error(error);
+    return;
+  }
+
+  const upcomingMatches = (data || []).filter(m => m.status !== "completed");
+  const results = (data || []).filter(m => m.status === "completed");
+
+  function renderMatch(m, isResult) {
+    let html = `<div class="card">
+      <strong>${escapeHTML(m.category)}</strong>
+      <p>SHADOWS FA vs ${escapeHTML(m.opponent)}</p>`;
+
+    if (m.match_date) html += `<p>📅 ${escapeHTML(m.match_date)}</p>`;
+    if (m.match_time) html += `<p>🕒 ${escapeHTML(m.match_time)}</p>`;
+    if (m.venue) html += `<p>📍 ${escapeHTML(m.venue)}</p>`;
+
+    if (isResult) {
+      html += `<h3>SHADOWS FA ${escapeHTML(m.shadows_score)} - ${escapeHTML(m.opponent_score)} ${escapeHTML(m.opponent)}</h3>`;
+    }
+
+    return html + `</div>`;
+  }
+
+  upcoming.innerHTML = upcomingMatches.length
+    ? upcomingMatches.map(m => renderMatch(m, false)).join("")
+    : "<p>No upcoming matches available.</p>";
+
+  completed.innerHTML = results.length
+    ? results.map(m => renderMatch(m, true)).join("")
+    : "<p>No match results available.</p>";
+}
+
+async function checkSession() {
+  const {data} = await db.auth.getSession();
+  if (!data.session) return;
+
+  const {data: isAdmin, error} = await db.rpc("is_admin");
+
+  if (error || isAdmin !== true) {
+    showMessage("This account does not have admin access.");
+    await db.auth.signOut();
+    return;
+  }
+
+  document.getElementById("loginBox").classList.add("hidden");
+  document.getElementById("dashboard").classList.remove("hidden");
+}
+
+document.getElementById("loginForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  showMessage("Checking login...");
+
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  const {error} = await db.auth.signInWithPassword({email, password});
+
+  if (error) {
+    showMessage("Login failed. Check your email and password.");
+    return;
+  }
+
+  const {data: isAdmin, error: adminError} = await db.rpc("is_admin");
+
+  if (adminError || isAdmin !== true) {
+    await db.auth.signOut();
+    showMessage("Admin access not verified. Check your Supabase admin setup.");
+    return;
+  }
+
+  document.getElementById("loginBox").classList.add("hidden");
+  document.getElementById("dashboard").classList.remove("hidden");
+  showMessage("Admin login successful.");
+});
+
+document.getElementById("matchForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  showMessage("Saving match...");
+
+  const match = {
+    category: document.getElementById("category").value.trim(),
+    opponent: document.getElementById("opponent").value.trim(),
+    match_date: document.getElementById("date").value || null,
+    match_time: document.getElementById("time").value.trim() || null,
+    venue: document.getElementById("venue").value.trim() || null,
+    status: document.getElementById("status").value
+  };
+
+  const ourScore = document.getElementById("ourScore").value;
+  const theirScore = document.getElementById("theirScore").value;
+
+  if (match.status === "completed") {
+    if (ourScore === "" || theirScore === "") {
+      showMessage("Enter both scores for a completed match.");
+      return;
+    }
+    match.shadows_score = Number(ourScore);
+    match.opponent_score = Number(theirScore);
+  }
+
+  const {error} = await db.from("matches").insert(match);
+
+  if (error) {
+    showMessage("Could not save. Check admin permissions in Supabase.");
+    console.error(error);
+    return;
+  }
+
+  showMessage("Match saved successfully!");
+  document.getElementById("matchForm").reset();
+  await loadMatches();
+});
+
+document.getElementById("logout").addEventListener("click", async () => {
+  await db.auth.signOut();
+  document.getElementById("dashboard").classList.add("hidden");
+  document.getElementById("loginBox").classList.remove("hidden");
+  showMessage("Logged out.");
+});
+
+checkSession();
+loadMatches();
+</script>
+
 </body>
 </html>
